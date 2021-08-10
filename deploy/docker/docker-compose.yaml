@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+
+    nginx:
+      image: nginx:1.19.0-alpine
+      volumes:
+        - nginx-configs:/etc/nginx/conf.d/
+      ports:
+        - 80:80
+      depends_on:
+        - ruby_backend
+
     postgresql:
         image: postgres
         volumes:
@@ -16,8 +26,8 @@ services:
         environment:
             - DBHOST=postgresql
         command: ./entrypoint.sh
-        ports:
-          - 3000:3000
+        expose:
+          - 3000
         depends_on:
           - postgresql
         env_file:
@@ -26,3 +36,8 @@ services:
 volumes:
     postgres:
     backups_data:
+    nginx-configs:
+      driver_opts:
+        type: none
+        device: /opt/nginx/
+        o: bind
