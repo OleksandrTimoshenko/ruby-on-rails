@@ -6,6 +6,7 @@
 
 .vagrant
 *.log
+.env
 
 # Ignore bundler config.
 /.bundle
