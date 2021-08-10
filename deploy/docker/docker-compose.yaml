@@ -13,9 +13,13 @@ services:
 
     ruby_backend:
         image: ruby_backend
+        environment:
+            - DBHOST=postgresql
         command: ./entrypoint.sh
         ports:
           - 3000:3000
+        depends_on:
+          - postgresql
         env_file:
           - ../../.env
 
