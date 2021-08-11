@@ -16,22 +16,19 @@ services:
         volumes:
             - postgres:/var/lib/postgresql/data/
             - backups_data:/var/backups/
-        ports:
-          - 5432:5432
         env_file: 
-            - ../../.env
+            - /opt/.env
 
     ruby_backend:
-        image: ruby_backend
+        # set your image name
+        image: ghcr.io/oleksandrtimoshenko/ruby_backend
         environment:
             - DBHOST=postgresql
         command: ./entrypoint.sh
-        expose:
-          - 3000
         depends_on:
           - postgresql
         env_file:
-          - ../../.env
+          - /opt/.env
 
 volumes:
     postgres:
