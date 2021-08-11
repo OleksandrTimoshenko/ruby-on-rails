@@ -1,0 +1,14 @@
+- name: server
+  hosts: all
+  become: True
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    project_name: "ruby-on-rails-project"
+
+  roles:
+    - install_docker
+    - role: geerlingguy.docker
+      docker_install_compose: true
+    - copy_files
+    - deploy
