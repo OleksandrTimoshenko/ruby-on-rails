@@ -6,9 +6,13 @@ Vagrant.configure("2") do |config|
     config.vm.define "server" do |machine|
       machine.vm.network "private_network", ip: "10.2.2.25"
       machine.vm.box = "bento/ubuntu-20.04"
-      #machine.vm.provision :ansible do |ansible|
-      #  ansible.playbook = ENV["PLAYBOOK_NAME"]
-      #  ansible.verbose = 'vv'
-      #end
+      machine.vm.provision :ansible do |ansible|
+        ansible.playbook = ENV["PLAYBOOK_NAME"]
+        ansible.verbose = 'vv'
+        ansible.extra_vars = {
+          github_token: ENV["GITHUB_TOKEN"],
+          github_user: ENV["GITHUB_USER"]
+      }
     end
   end
+end

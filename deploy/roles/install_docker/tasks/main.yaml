@@ -1,0 +1,26 @@
+---
+- name: Wait for system to become reachable
+  wait_for_connection:
+
+- name: Gather facts for first time
+  setup:
+
+- name: apt
+  apt:
+    upgrade: "yes"
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+- name: Install pip3
+  apt:
+    name: python3-pip
+    state: present
+    update_cache: yes
+- name: install docker
+  pip:
+    name: "{{ packeges }}"
+    executable: pip3
+  vars:
+    packeges:
+      - docker
+      - docker-compose
+      - jsondiff

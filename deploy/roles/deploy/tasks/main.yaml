@@ -1,0 +1,30 @@
+---
+- name: Init a new swarm with default parameters
+  docker_swarm:
+    state: present
+    # only for local testing with Vagrant
+    advertise_addr: "10.2.2.25"
+
+- name: Log into DockerHub
+  community.docker.docker_login:
+    username: "{{ github_user }}"
+    password: "{{ github_token }}"
+    url: ghcr.io
+
+- name: Pull an images
+  community.docker.docker_image:
+    name: "{{ item }}"
+    tag: latest
+    source: pull
+    force_source: yes
+  with_items:
+    - ghcr.io/oleksandrtimoshenko/ruby_backend
+
+- name: Deploy stage stack from a compose file
+  docker_stack:
+    state: present
+    prune: yes
+    name: "{{ project_name }}-stack"
+    with_registry_auth: yes
+    compose:
+      - /opt/docker-compose.yaml
