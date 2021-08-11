@@ -30,6 +30,19 @@ services:
         env_file:
           - /opt/.env
 
+    maildev:
+        image: djfarrelly/maildev
+        ports:
+          - "1080:80"
+    redis:
+        image: redis
+    sidekiq:
+        # set your image name
+        image: ghcr.io/oleksandrtimoshenko/ruby_backend
+        command: bundle exec sidekiq -q mailers
+        depends_on:
+          - redis
+
 volumes:
     postgres:
     backups_data:
